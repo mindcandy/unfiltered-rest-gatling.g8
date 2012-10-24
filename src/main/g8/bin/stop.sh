@@ -1,0 +1,2 @@
+#!/bin/sh
+sudo jsvc -stop -server -verbose -debug -pidfile /var/run/$name$.pid -cp ../lib_managed/jars/commons-daemon/commons-daemon/commons-daemon-1.0.10.jar:../target/$name$-assembly-0.1-SNAPSHOT.jar $organization$.$project$.server.$project;format="Camel"$Starter

@@ -1,0 +1,5 @@
+unfiltered-rest-gatling Template
+Copyright 2012 Mind Candy Ltd.
+
+This product includes software developed by The Apache Software
+Foundation (http://www.apache.org/).

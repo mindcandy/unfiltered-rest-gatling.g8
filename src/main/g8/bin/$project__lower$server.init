@@ -1,0 +1,57 @@
+#!/bin/sh
+### BEGIN INIT INFO
+# Provides:          $project$server
+# Required-Start:    \$local_fs \$remote_fs \$network
+# Required-Stop:     \$local_fs \$remote_fs \$network
+# Should-Start:      \$named
+# Should-Stop:       \$named
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Control $name$ server
+# Description:       Control the $name$ server daemon.
+### END INIT INFO
+
+set -e
+
+if [ -z "\${JAVA_HOME}" ]; then
+        JAVA_HOME=\$(readlink -f /usr/bin/java | sed "s:/bin/java::")
+fi
+JAVA_OPTS="-Xms512m -Xmx512m"
+
+PID=/var/run/$project$server.pid
+OUT_LOG=/var/log/$project$server/$project$server.log
+ERR_LOG=/var/log/$project$server/$project$server_err.log
+
+$project;format="upper"$SERVER_LOG_CONFIG=/etc/$organization;format="word,lower"$/$project;format="lower"$_logback.xml
+$project;format="upper"$SERVER_HOME=/opt/$organization;format="word,lower"$/$project;format="lower"$
+$project;format="upper"$SERVER_CLASSPATH=\$$project;format="upper"$SERVER_HOME/$project;format="lower"$-0.1-SNAPSHOT.jar
+$project;format="upper"$SERVER_CLASS=$organization$.$project;format="lower"$.server.$project;format="Camel"$Starter
+
+if [ -n "\${$project;format="upper"$SERVER_LOG_CONFIG}" ]; then
+        JAVA_OPTS="-Dlogback.configurationFile=\${$project;format="upper"$SERVER_LOG_CONFIG} \${JAVA_OPTS}"
+fi
+
+DAEMON_ARGS="-home \${JAVA_HOME} \${JAVA_OPTS} -pidfile \${PID} -outfile \${OUT_LOG} -errfile \${ERR_LOG} -cp \${$project;format="upper"$SERVER_CLASSPATH} \${$project;format="upper"$SERVER_CLASS}"
+
+. /lib/lsb/init-functions
+
+case "\$1" in
+        start)
+                log_daemon_msg "Starting $project;format="lower"$-server"
+                cd \${$project;format="upper"$SERVER_HOME} && jsvc \${DAEMON_ARGS}
+                log_end_msg 0
+                ;;
+        stop)
+                log_daemon_msg "Stopping $project;format="lower"$-server"
+                cd \${$project;format="upper"$SERVER_HOME} && jsvc -stop \${DAEMON_ARGS}
+                log_end_msg 0
+                ;;
+        *)
+                log_success_msg "Usage: \$0 {start|stop}"
+                echo "Usage: \$0 {start|stop}"
+                exit 1
+                ;;
+esac
+
+exit 0
+
